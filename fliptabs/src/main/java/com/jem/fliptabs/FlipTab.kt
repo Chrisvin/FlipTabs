@@ -5,7 +5,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.widget.FrameLayout̥
+import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fliptab.view.*
 
 
