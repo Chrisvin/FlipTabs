@@ -3,11 +3,9 @@ package com.jem.fliptabs
 import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.text.SpannableString
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.widget.FrameLayout̥
 import kotlinx.android.synthetic.main.fliptab.view.*
 
 
@@ -19,6 +17,7 @@ class FlipTab : FrameLayout {
         attrs,
         defStyleAttr
     )
+
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
         context: Context,
@@ -30,6 +29,7 @@ class FlipTab : FrameLayout {
     private var isLeftSelected: Boolean = true
     private var animationInProgress: Boolean = false
     private var animationMiddleViewFlippedFlag: Boolean = false
+
     private val leftTabText get() = tab_left.text.toString()
     private val rightTabText get() = tab_right.text.toString()
 
@@ -42,7 +42,7 @@ class FlipTab : FrameLayout {
             resources.getDrawable(R.drawable.tab_left_selected)
         }
     }
-    private val rightSelectedDrawable  by lazy {
+    private val rightSelectedDrawable by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             resources.getDrawable(R.drawable.tab_right_selected, null)
         } else {
@@ -79,10 +79,13 @@ class FlipTab : FrameLayout {
                 animationInProgress = true
                 (parent as ViewGroup?)?.clipChildren = false
                 (parent as ViewGroup?)?.clipToPadding = false
-                tabSelectedListener?.onTabSelected(!isLeftSelected, if (isLeftSelected) rightTabText else leftTabText)
+                tabSelectedListener?.onTabSelected(
+                    !isLeftSelected,
+                    if (isLeftSelected) rightTabText else leftTabText
+                )
             }
             .setUpdateListener {
-                if (!animationMiddleViewFlippedFlag && it.animatedFraction>0.5) {
+                if (!animationMiddleViewFlippedFlag && it.animatedFraction > 0.5) {
                     animationMiddleViewFlippedFlag = true
                     //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
                     if (isLeftSelected) {
