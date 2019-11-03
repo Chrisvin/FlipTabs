@@ -33,6 +33,8 @@ class FlipTab : FrameLayout {
     private val leftTabText get() = tab_left.text.toString()
     private val rightTabText get() = tab_right.text.toString()
 
+    private var tabSelectedListener: TabSelectedListener? = null
+
     private val leftSelectedDrawable by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             resources.getDrawable(R.drawable.tab_left_selected, null)
@@ -53,11 +55,15 @@ class FlipTab : FrameLayout {
         tab_left.setOnClickListener {
             if (!isLeftSelected) {
                 flipTabs()
+            } else {
+                tabSelectedListener?.onTabReselected(isLeftSelected, leftTabText)
             }
         }
         tab_right.setOnClickListener {
             if (isLeftSelected) {
                 flipTabs()
+            } else {
+                tabSelectedListener?.onTabReselected(isLeftSelected, rightTabText)
             }
         }
         clipChildren = false
@@ -73,6 +79,7 @@ class FlipTab : FrameLayout {
                 animationInProgress = true
                 (parent as ViewGroup?)?.clipChildren = false
                 (parent as ViewGroup?)?.clipToPadding = false
+                tabSelectedListener?.onTabSelected(!isLeftSelected, if (isLeftSelected) rightTabText else leftTabText)
             }
             .setUpdateListener {
                 if (!animationMiddleViewFlippedFlag && it.animatedFraction>0.5) {
@@ -109,5 +116,14 @@ class FlipTab : FrameLayout {
                     .start()
             }
             .start()
+    }
+
+    public interface TabSelectedListener {
+        public fun onTabSelected(isLeftTab: Boolean, tabTextValue: String): Unit
+        public fun onTabReselected(isLeftTab: Boolean, tabTextValue: String): Unit
+    }
+
+    public fun setTabSelectedListener(tabSelectedListener: TabSelectedListener) {
+        this.tabSelectedListener = tabSelectedListener
     }
 }
