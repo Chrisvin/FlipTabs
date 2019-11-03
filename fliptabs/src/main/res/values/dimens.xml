@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tabPaddingTop">8dp</dimen>
+    <dimen name="tabPaddingBottom">8dp</dimen>
+    <dimen name="leftTabPaddingStart">8dp</dimen>
+    <dimen name="leftTabPaddingEnd">3dp</dimen>
+    <dimen name="rightTabPaddingEnd">8dp</dimen>
+    <dimen name="rightTabPaddingStart">3dp</dimen>
+</resources>
