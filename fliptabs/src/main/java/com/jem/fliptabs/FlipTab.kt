@@ -33,6 +33,21 @@ class FlipTab : FrameLayout {
     private val leftTabText get() = tab_left.text.toString()
     private val rightTabText get() = tab_right.text.toString()
 
+    private val leftSelectedDrawable by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resources.getDrawable(R.drawable.tab_left_selected, null)
+        } else {
+            resources.getDrawable(R.drawable.tab_left_selected)
+        }
+    }
+    private val rightSelectedDrawable  by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resources.getDrawable(R.drawable.tab_right_selected, null)
+        } else {
+            resources.getDrawable(R.drawable.tab_right_selected)
+        }
+    }
+
     init {
         inflate(context, R.layout.fliptab, this)
         tab_left.setOnClickListener {
@@ -62,29 +77,16 @@ class FlipTab : FrameLayout {
             .setUpdateListener {
                 if (!animationMiddleViewFlippedFlag && it.animatedFraction>0.5) {
                     animationMiddleViewFlippedFlag = true
-                    //TODO: Find out a better alternative to settingBackgroundResouce since it causes a slight stutter
-                    //Consider using SpannableString and ScaleXSpan on the text directly
-                    val startPadding: Int
-                    val endPadding: Int
+                    //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
                     if (isLeftSelected) {
                         tab_selected.text = rightTabText
-                        tab_selected.setBackgroundResource(R.drawable.tab_right_selected)
+                        tab_selected.background = rightSelectedDrawable
                         tab_selected.scaleX = -1f
-                        startPadding = resources.getDimensionPixelSize(R.dimen.rightTabPaddingStart)
-                        endPadding = resources.getDimensionPixelSize(R.dimen.rightTabPaddingEnd)
                     } else {
                         tab_selected.text = leftTabText
-                        tab_selected.setBackgroundResource(R.drawable.tab_left_selected)
+                        tab_selected.background = leftSelectedDrawable
                         tab_selected.scaleX = 1f
-                        startPadding = resources.getDimensionPixelSize(R.dimen.leftTabPaddingStart)
-                        endPadding = resources.getDimensionPixelSize(R.dimen.leftTabPaddingEnd)
                     }
-                    tab_selected.setPadding(
-                        startPadding,
-                        resources.getDimensionPixelSize(R.dimen.tabPaddingTop),
-                        endPadding,
-                        resources.getDimensionPixelSize(R.dimen.tabPaddingBottom)
-                    )
                 }
             }
             .withEndAction {
