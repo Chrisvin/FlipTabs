@@ -90,11 +90,23 @@ class FlipTab : FrameLayout {
                 }
             }
             .withEndAction {
-                isLeftSelected = !isLeftSelected
-                animationInProgress = false
-                animationMiddleViewFlippedFlag = false
-                (parent as ViewGroup).clipChildren = true
-                (parent as ViewGroup).clipToPadding = true
+                base_fliptab_container.animate()
+                    .rotationYBy(if (isLeftSelected) 3f else -3f)
+                    .setDuration(75)
+                    .withEndAction {
+                        base_fliptab_container.animate()
+                            .rotationYBy(if (isLeftSelected) -3f else 3f)
+                            .setDuration(75)
+                            .withEndAction {
+                                isLeftSelected = !isLeftSelected
+                                animationInProgress = false
+                                animationMiddleViewFlippedFlag = false
+                                (parent as ViewGroup).clipChildren = true
+                                (parent as ViewGroup).clipToPadding = true
+                            }
+                            .start()
+                    }
+                    .start()
             }
             .start()
     }
