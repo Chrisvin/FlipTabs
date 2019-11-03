@@ -4,6 +4,7 @@
         android:padding="16dp"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:id="@+id/base_fliptab_container"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
@@ -25,7 +26,7 @@
                 android:paddingEnd="@dimen/leftTabPaddingEnd"
                 android:paddingTop="@dimen/tabPaddingTop"
                 android:paddingBottom="@dimen/tabPaddingBottom"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/holo_blue_dark"
                 android:text="Left tab"/>
         <TextView
                 android:id="@+id/tab_right"
@@ -42,7 +43,7 @@
                 android:paddingEnd="@dimen/rightTabPaddingEnd"
                 android:paddingTop="@dimen/tabPaddingTop"
                 android:paddingBottom="@dimen/tabPaddingBottom"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/holo_blue_dark"
                 android:text="Right tab"/>
     </LinearLayout>
     <LinearLayout
