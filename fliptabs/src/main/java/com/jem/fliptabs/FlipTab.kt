@@ -52,10 +52,10 @@ class FlipTab : FrameLayout {
     init {
         inflate(context, R.layout.fliptab, this)
         tab_left.setOnClickListener {
-            if (!isLeftSelected) {
-                flipTabs()
-            } else {
+            if (isLeftSelected) {
                 tabSelectedListener?.onTabReselected(isLeftSelected, leftTabText)
+            } else {
+                flipTabs()
             }
         }
         tab_right.setOnClickListener {
@@ -70,15 +70,17 @@ class FlipTab : FrameLayout {
     }
 
     private fun flipTabs() {
+        animationMiddleViewFlippedFlag = false
+        isLeftSelected = !isLeftSelected
         tab_selected_container.animate()
-            .rotationYBy(if (isLeftSelected) 180f else -180f)
+            .rotationY(if (isLeftSelected) 0f else 180f)
             .setDuration(500)
             .withStartAction {
                 (parent as ViewGroup?)?.clipChildren = false
                 (parent as ViewGroup?)?.clipToPadding = false
                 tabSelectedListener?.onTabSelected(
-                    !isLeftSelected,
-                    if (isLeftSelected) rightTabText else leftTabText
+                    isLeftSelected,
+                    if (isLeftSelected) leftTabText else rightTabText
                 )
             }
             .setUpdateListener {
@@ -86,13 +88,13 @@ class FlipTab : FrameLayout {
                     animationMiddleViewFlippedFlag = true
                     //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
                     if (isLeftSelected) {
-                        tab_selected.text = rightTabText
-                        tab_selected.background = rightSelectedDrawable
-                        tab_selected.scaleX = -1f
-                    } else {
                         tab_selected.text = leftTabText
                         tab_selected.background = leftSelectedDrawable
                         tab_selected.scaleX = 1f
+                    } else {
+                        tab_selected.text = rightTabText
+                        tab_selected.background = rightSelectedDrawable
+                        tab_selected.scaleX = -1f
                     }
                 }
             }
