@@ -101,6 +101,10 @@ class FlipTab : FrameLayout {
                     }
                 }
             }
+            .withEndAction {
+                (parent as ViewGroup?)?.clipChildren = true
+                (parent as ViewGroup?)?.clipToPadding = true
+            }
             .start()
         val animSet = AnimatorSet()
         val animator1 = ObjectAnimator.ofFloat(
@@ -109,15 +113,6 @@ class FlipTab : FrameLayout {
         animator1.duration = 500
         val animator2 = ObjectAnimator.ofFloat(base_fliptab_container, "rotationY", 0f)
         animator2.duration = 250
-        animator2.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
-                (parent as ViewGroup?)?.clipChildren = true
-                (parent as ViewGroup?)?.clipToPadding = true
-            }
-        })
         animSet.playSequentially(animator1, animator2)
         animSet.start()
     }
