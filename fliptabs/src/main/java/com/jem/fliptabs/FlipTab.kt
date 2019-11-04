@@ -1,5 +1,8 @@
 package com.jem.fliptabs
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -98,25 +101,25 @@ class FlipTab : FrameLayout {
                     }
                 }
             }
-            .withEndAction {
-                base_fliptab_container.animate()
-                    .rotationYBy(if (isLeftSelected) 3f else -3f)
-                    .setDuration(75)
-                    .withEndAction {
-                        base_fliptab_container.animate()
-                            .rotationYBy(if (isLeftSelected) -3f else 3f)
-                            .setDuration(75)
-                            .withEndAction {
-                                isLeftSelected = !isLeftSelected
-                                animationInProgress = false
-                                (parent as ViewGroup).clipChildren = true
-                                (parent as ViewGroup).clipToPadding = true
-                            }
-                            .start()
-                    }
-                    .start()
-            }
             .start()
+        val animSet = AnimatorSet()
+        val animator1 = ObjectAnimator.ofFloat(
+            base_fliptab_container, "rotationY", if (isLeftSelected) -5f else 5f
+        )
+        animator1.duration = 500
+        val animator2 = ObjectAnimator.ofFloat(base_fliptab_container, "rotationY", 0f)
+        animator2.duration = 250
+        animator2.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationEnd(animation: Animator?) {
+                (parent as ViewGroup?)?.clipChildren = true
+                (parent as ViewGroup?)?.clipToPadding = true
+            }
+        })
+        animSet.playSequentially(animator1, animator2)
+        animSet.start()
     }
 
     public interface TabSelectedListener {
