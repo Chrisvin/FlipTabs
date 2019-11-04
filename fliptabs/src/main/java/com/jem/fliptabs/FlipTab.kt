@@ -27,7 +27,6 @@ class FlipTab : FrameLayout {
     ) : super(context, attrs, defStyleAttr, defStyleRes)
 
     private var isLeftSelected: Boolean = true
-    private var animationInProgress: Boolean = false
     private var animationMiddleViewFlippedFlag: Boolean = false
 
     private val leftTabText get() = tab_left.text.toString()
@@ -71,12 +70,10 @@ class FlipTab : FrameLayout {
     }
 
     private fun flipTabs() {
-        if (animationInProgress) return
         tab_selected_container.animate()
             .rotationYBy(if (isLeftSelected) 180f else -180f)
             .setDuration(500)
             .withStartAction {
-                animationInProgress = true
                 (parent as ViewGroup?)?.clipChildren = false
                 (parent as ViewGroup?)?.clipToPadding = false
                 tabSelectedListener?.onTabSelected(
@@ -110,7 +107,6 @@ class FlipTab : FrameLayout {
                             .withEndAction {
                                 isLeftSelected = !isLeftSelected
                                 animationInProgress = false
-                                animationMiddleViewFlippedFlag = false
                                 (parent as ViewGroup).clipChildren = true
                                 (parent as ViewGroup).clipToPadding = true
                             }
