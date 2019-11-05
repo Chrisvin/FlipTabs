@@ -122,7 +122,7 @@ class FlipTab : FrameLayout {
         }
     }
 
-    private fun flipTabs() {
+    public fun flipTabs() {
         animationMiddleViewFlippedFlag = false
         isLeftSelected = !isLeftSelected
         tab_selected_container.animate()
@@ -227,9 +227,23 @@ class FlipTab : FrameLayout {
 
     public fun setLeftTabText(text: String) {
         tab_left.text = text
+        if (isLeftSelected) {
+            tab_selected.text = text
+        }
     }
 
     public fun setRightTabText(text: String) {
         tab_right.text = text
+        if (!isLeftSelected) {
+            tab_selected.text = text
+        }
+    }
+
+    public fun selectLeftTab(isTrue: Boolean) {
+        if (isTrue && !isLeftSelected) {
+            flipTabs()
+        } else if (!isTrue && isLeftSelected) {
+            flipTabs()
+        }
     }
 }
