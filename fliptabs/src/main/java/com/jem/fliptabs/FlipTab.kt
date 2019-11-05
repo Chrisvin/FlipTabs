@@ -125,4 +125,51 @@ class FlipTab : FrameLayout {
     public fun setTabSelectedListener(tabSelectedListener: TabSelectedListener) {
         this.tabSelectedListener = tabSelectedListener
     }
+
+    public fun setWobbleAngle(angle: Float) {
+        wobbleAngle = angle
+    }
+
+    public fun setWobbleReturnAnimationDuration(duration: Int) {
+        wobbleReturnAnimationDuration = duration
+    }
+
+    public fun setFlipAnimationDuration(duration: Int) {
+        flipAnimationDuration = duration
+    }
+
+    public fun setOverallColor(color: Int) {
+        setTextColor(color)
+        setHighlightColor(color)
+    }
+
+    public fun setTextColor(color: Int) {
+        tab_left.setTextColor(color)
+        tab_right.setTextColor(color)
+    }
+
+    public fun setHighlightColor(color: Int) {
+        (tab_left.background as GradientDrawable)?.setStroke(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                2f,
+                resources.displayMetrics
+            ).toInt(), color
+        )
+        (tab_right.background as GradientDrawable)?.setStroke(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                2f,
+                resources.displayMetrics
+            ).toInt(), color
+        )
+    }
+
+    public fun setLeftTabText(text: String) {
+        tab_left.text = text
+    }
+
+    public fun setRightTabText(text: String) {
+        tab_right.text = text
+    }
 }
