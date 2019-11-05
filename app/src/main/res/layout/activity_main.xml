@@ -27,6 +27,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:leftTabText="Photos"
+            app:rightTabText="Videos"
+            app:overallColor="#9966EE"
             app:layout_constraintLeft_toRightOf="@id/left_guideline"
             app:layout_constraintRight_toLeftOf="@id/right_guideline"/>
 
