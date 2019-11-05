@@ -109,6 +109,12 @@ class FlipTab : FrameLayout {
                     setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
                     setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
                 }
+                if (typedArray.getInt(R.styleable.FlipTab_startingTab, 0)==1) {
+                    isLeftSelected = false
+                    tab_selected_container.rotationY = 180f
+                    tab_selected.background = rightSelectedDrawable
+                    tab_selected.scaleX = -1f
+                }
                 setLeftTabText(getString(R.styleable.FlipTab_leftTabText) ?: "Left tab")
                 setRightTabText(getString(R.styleable.FlipTab_rightTabText) ?: "Right tab")
             }
