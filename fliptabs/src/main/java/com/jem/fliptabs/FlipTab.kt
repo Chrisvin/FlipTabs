@@ -240,11 +240,37 @@ class FlipTab : FrameLayout {
         }
     }
 
-    public fun selectLeftTab(isTrue: Boolean) {
-        if (isTrue && !isLeftSelected) {
-            flipTabs()
-        } else if (!isTrue && isLeftSelected) {
-            flipTabs()
+    public fun selectLeftTab(withAnimation: Boolean) {
+        if (!isLeftSelected) {
+            if (withAnimation) {
+                flipTabs()
+            } else {
+                isLeftSelected = true
+                tab_selected_container.rotationY = 0f
+                tab_selected.text = leftTabText
+                tab_selected.background = leftSelectedDrawable
+                tab_selected.scaleX = 1f
+                tabSelectedListener?.onTabSelected(isLeftSelected, leftTabText)
+            }
+        } else {
+            tabSelectedListener?.onTabReselected(isLeftSelected, leftTabText)
+        }
+    }
+
+    public fun selectRightTab(withAnimation: Boolean) {
+        if (isLeftSelected) {
+            if (withAnimation) {
+                flipTabs()
+            } else {
+                isLeftSelected = false
+                tab_selected_container.rotationY = 180f
+                tab_selected.text = rightTabText
+                tab_selected.background = rightSelectedDrawable
+                tab_selected.scaleX = -1f
+                tabSelectedListener?.onTabSelected(isLeftSelected, rightTabText)
+            }
+        } else {
+            tabSelectedListener?.onTabReselected(isLeftSelected, rightTabText)
         }
     }
 }
