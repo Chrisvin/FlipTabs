@@ -137,18 +137,19 @@ class FlipTab : FrameLayout {
                 )
             }
             .setUpdateListener {
-                if (!animationMiddleViewFlippedFlag && it.animatedFraction > 0.5) {
+                if (animationMiddleViewFlippedFlag) return@setUpdateListener
+
+                //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
+                if (isLeftSelected && tab_selected_container.rotationY <= 90f) {
                     animationMiddleViewFlippedFlag = true
-                    //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
-                    if (isLeftSelected) {
-                        tab_selected.text = leftTabText
-                        tab_selected.background = leftSelectedDrawable
-                        tab_selected.scaleX = 1f
-                    } else {
-                        tab_selected.text = rightTabText
-                        tab_selected.background = rightSelectedDrawable
-                        tab_selected.scaleX = -1f
-                    }
+                    tab_selected.text = leftTabText
+                    tab_selected.background = leftSelectedDrawable
+                    tab_selected.scaleX = 1f
+                } else if (!isLeftSelected && tab_selected_container.rotationY >= 90f) {
+                    animationMiddleViewFlippedFlag = true
+                    tab_selected.text = rightTabText
+                    tab_selected.background = rightSelectedDrawable
+                    tab_selected.scaleX = -1f
                 }
             }
             .withEndAction {
