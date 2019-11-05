@@ -4,7 +4,7 @@
 
 <p align="center"><img src="FlipTabs-Demo.gif"/></p>
 
-FlipTabs is an extremely lightweight library that contains a 2-tab view that switches using flip animation. ([Source of Inspiration](https://dribbble.com/shots/7419072-Segmented-Control))
+FlipTabs is a lightweight library that contains a 2-tab view that switches using flip animation. ([Source of Inspiration](https://dribbble.com/shots/7419072-Segmented-Control))
 
 ## Getting started
 ### Setting up the dependency
