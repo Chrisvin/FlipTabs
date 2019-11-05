@@ -1,12 +1,14 @@
 package com.jem.fliptabs
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.fliptab.view.*
@@ -14,12 +16,16 @@ import kotlinx.android.synthetic.main.fliptab.view.*
 
 class FlipTab : FrameLayout {
     constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        initialize(attrs)
+    }
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
         defStyleAttr
-    )
+    ) {
+        initialize(attrs)
+    }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     constructor(
@@ -27,7 +33,9 @@ class FlipTab : FrameLayout {
         attrs: AttributeSet?,
         defStyleAttr: Int,
         defStyleRes: Int
-    ) : super(context, attrs, defStyleAttr, defStyleRes)
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
+        initialize(attrs)
+    }
 
     private var isLeftSelected: Boolean = true
     private var animationMiddleViewFlippedFlag: Boolean = false
@@ -52,6 +60,17 @@ class FlipTab : FrameLayout {
         }
     }
 
+    companion object {
+        private val FLIP_ANIMATION_DURATION = 500
+        private val WOBBLE_RETURN_ANIMATION_DURATION = 250
+        private val WOBBLE_ANGLE: Float = 5f
+        private val OVERALL_COLOR: Int = Color.parseColor("#ff0099cc")
+    }
+
+    private var flipAnimationDuration = FLIP_ANIMATION_DURATION
+    private var wobbleReturnAnimationDuration = WOBBLE_RETURN_ANIMATION_DURATION
+    private var wobbleAngle = WOBBLE_ANGLE
+
     init {
         inflate(context, R.layout.fliptab, this)
         tab_left.setOnClickListener {
@@ -72,12 +91,33 @@ class FlipTab : FrameLayout {
         clipToPadding = false
     }
 
+    private fun initialize(attrs: AttributeSet?) {
+        attrs?.let {
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.FlipTab, 0, 0)
+            typedArray.apply {
+                flipAnimationDuration =
+                    getInt(R.styleable.FlipTab_flipAnimationDuration, FLIP_ANIMATION_DURATION)
+                wobbleReturnAnimationDuration = getInt(
+                    R.styleable.FlipTab_wobbleReturnAnimationDuration,
+                    WOBBLE_RETURN_ANIMATION_DURATION
+                )
+                wobbleAngle = getFloat(R.styleable.FlipTab_wobbleAngle, WOBBLE_ANGLE)
+                setOverallColor(getColor(R.styleable.FlipTab_overallColor, OVERALL_COLOR))
+                setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
+                setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
+                setLeftTabText(getString(R.styleable.FlipTab_leftTabText) ?: "Left tab")
+                setRightTabText(getString(R.styleable.FlipTab_rightTabText) ?: "Right tab")
+            }
+            typedArray.recycle()
+        }
+    }
+
     private fun flipTabs() {
         animationMiddleViewFlippedFlag = false
         isLeftSelected = !isLeftSelected
         tab_selected_container.animate()
             .rotationY(if (isLeftSelected) 0f else 180f)
-            .setDuration(500)
+            .setDuration(flipAnimationDuration.toLong())
             .withStartAction {
                 (parent as ViewGroup?)?.clipChildren = false
                 (parent as ViewGroup?)?.clipToPadding = false
@@ -108,11 +148,11 @@ class FlipTab : FrameLayout {
             .start()
         val animSet = AnimatorSet()
         val animator1 = ObjectAnimator.ofFloat(
-            base_fliptab_container, "rotationY", if (isLeftSelected) -5f else 5f
+            base_fliptab_container, "rotationY", if (isLeftSelected) -wobbleAngle else wobbleAngle
         )
-        animator1.duration = 500
+        animator1.duration = flipAnimationDuration.toLong()
         val animator2 = ObjectAnimator.ofFloat(base_fliptab_container, "rotationY", 0f)
-        animator2.duration = 250
+        animator2.duration = wobbleReturnAnimationDuration.toLong()
         animSet.playSequentially(animator1, animator2)
         animSet.start()
     }
