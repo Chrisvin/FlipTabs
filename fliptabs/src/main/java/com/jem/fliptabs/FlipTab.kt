@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.support.annotation.RequiresApi
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -102,9 +103,12 @@ class FlipTab : FrameLayout {
                     WOBBLE_RETURN_ANIMATION_DURATION
                 )
                 wobbleAngle = getFloat(R.styleable.FlipTab_wobbleAngle, WOBBLE_ANGLE)
-                setOverallColor(getColor(R.styleable.FlipTab_overallColor, OVERALL_COLOR))
-                setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
-                setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
+                if(hasValue(R.styleable.FlipTab_overallColor)) {
+                    setOverallColor(getColor(R.styleable.FlipTab_overallColor, OVERALL_COLOR))
+                } else {
+                    setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
+                    setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
+                }
                 setLeftTabText(getString(R.styleable.FlipTab_leftTabText) ?: "Left tab")
                 setRightTabText(getString(R.styleable.FlipTab_rightTabText) ?: "Right tab")
             }
@@ -203,6 +207,16 @@ class FlipTab : FrameLayout {
                 resources.displayMetrics
             ).toInt(), color
         )
+        (tab_selected.background as GradientDrawable)?.setStroke(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                2f,
+                resources.displayMetrics
+            ).toInt(), color
+        )
+        (tab_selected.background as GradientDrawable)?.setColor(color)
+        DrawableCompat.setTint(leftSelectedDrawable, color)
+        DrawableCompat.setTint(rightSelectedDrawable, color)
     }
 
     public fun setLeftTabText(text: String) {
