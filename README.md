@@ -1,6 +1,6 @@
 # FlipTabs
  
- [![License: MIT](https://img.shields.io/badge/License-MIT-silver.svg)](https://opensource.org/licenses/MIT) [![](https://jitpack.io/v/Chrisvin/FlipTabs.svg)](https://jitpack.io/#Chrisvin/FlipTabs) [![API](https://img.shields.io/badge/API-15%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=19)
+ [![License: MIT](https://img.shields.io/badge/License-MIT-silver.svg)](https://opensource.org/licenses/MIT) [![](https://jitpack.io/v/Chrisvin/FlipTabs.svg)](https://jitpack.io/#Chrisvin/FlipTabs) [![API](https://img.shields.io/badge/API-19%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=19)
 
 <p align="center"><img src="FlipTabs-Demo.gif"/></p>
 
