@@ -114,6 +114,11 @@ class FlipTab : FrameLayout {
                     tab_selected_container.rotationY = 180f
                     tab_selected.background = rightSelectedDrawable
                     tab_selected.scaleX = -1f
+                } else {
+                    isLeftSelected = true
+                    tab_selected_container.rotationY = 0f
+                    tab_selected.background = leftSelectedDrawable
+                    tab_selected.scaleX = 1f
                 }
                 setLeftTabText(getString(R.styleable.FlipTab_leftTabText) ?: "Left tab")
                 setRightTabText(getString(R.styleable.FlipTab_rightTabText) ?: "Right tab")
