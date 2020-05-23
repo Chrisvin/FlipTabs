@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FlipTab">
+        <attr name="removeDefaultPadding" format="boolean" />
         <attr name="flipAnimationDuration" format="integer" />
         <attr name="wobbleReturnAnimationDuration" format="integer" />
         <attr name="wobbleAngle" format="float" />

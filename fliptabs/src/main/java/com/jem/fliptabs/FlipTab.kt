@@ -20,6 +20,7 @@ class FlipTab : FrameLayout {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         initialize(attrs)
     }
+
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context,
         attrs,
@@ -103,13 +104,13 @@ class FlipTab : FrameLayout {
                     WOBBLE_RETURN_ANIMATION_DURATION
                 )
                 wobbleAngle = getFloat(R.styleable.FlipTab_wobbleAngle, WOBBLE_ANGLE)
-                if(hasValue(R.styleable.FlipTab_overallColor)) {
+                if (hasValue(R.styleable.FlipTab_overallColor)) {
                     setOverallColor(getColor(R.styleable.FlipTab_overallColor, OVERALL_COLOR))
                 } else {
                     setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
                     setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
                 }
-                if (typedArray.getInt(R.styleable.FlipTab_startingTab, 0)==1) {
+                if (typedArray.getInt(R.styleable.FlipTab_startingTab, 0) == 1) {
                     isLeftSelected = false
                     tab_selected_container.rotationY = 180f
                     tab_selected.background = rightSelectedDrawable
@@ -119,6 +120,9 @@ class FlipTab : FrameLayout {
                     tab_selected_container.rotationY = 0f
                     tab_selected.background = leftSelectedDrawable
                     tab_selected.scaleX = 1f
+                }
+                if (typedArray.getBoolean(R.styleable.FlipTab_removeDefaultPadding, false)) {
+                    base_fliptab_container.setPadding(0, 0, 0, 0)
                 }
                 setLeftTabText(getString(R.styleable.FlipTab_leftTabText) ?: "Left tab")
                 setRightTabText(getString(R.styleable.FlipTab_rightTabText) ?: "Right tab")
