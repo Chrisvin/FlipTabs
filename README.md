@@ -19,7 +19,7 @@ allprojects {
 ```
 2. Add the FlipTabs dependency in the build.gradle:
 ```
-implementation 'com.github.Chrisvin:FlipTabs:v1.1'
+implementation 'com.github.Chrisvin:FlipTabs:v1.2'
 ```
 
 ### Demo app
@@ -35,6 +35,7 @@ To run the demo project, clone the repository and run it via Android Studio.
   app:leftTabText="Photos"
   app:rightTabText="Videos"
   app:startingTab="right" //or "left"
+  app:removeDefaultPadding="false" // `FlipTab` has a default padding of 16dp on all sides to ensure space for the flipping animation
   app:overallColor="#9966EE"
   app:textColor="#FF0000" //will be ignored if overallColor is defined
   app:highlightColor="#FF0000" //will be ignored if overallColor is defined
@@ -42,6 +43,7 @@ To run the demo project, clone the repository and run it via Android Studio.
   app:wobbleReturnAnimationDuration="200"
   app:wobbleAngle="3" />
 ```
+<b>Note:</b> Disabling the default padding (using `app:removeDefaultPadding="true"`) means that you (the dev) need to ensure that there is enough space around the FlipTab so as to not clip the flipping animation.
 ### Adding/Modifying programmatically
 ```kotlin
 val flipTab = FlipTab(this)
