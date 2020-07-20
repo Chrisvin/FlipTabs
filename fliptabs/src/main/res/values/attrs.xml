@@ -14,5 +14,6 @@
             <enum name="left" value="0" />
             <enum name="right" value="1" />
         </attr>
+        <attr name="borderWidth" format="dimension"/>
     </declare-styleable>
 </resources>

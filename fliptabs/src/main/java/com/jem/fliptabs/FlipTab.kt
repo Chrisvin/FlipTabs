@@ -67,11 +67,15 @@ class FlipTab : FrameLayout {
         private val WOBBLE_RETURN_ANIMATION_DURATION = 250
         private val WOBBLE_ANGLE: Float = 5f
         private val OVERALL_COLOR: Int = Color.parseColor("#ff0099cc")
+        private const val DEFAULT_BORDER_WIDTH_IN_DP = 2f
     }
 
     private var flipAnimationDuration = FLIP_ANIMATION_DURATION
     private var wobbleReturnAnimationDuration = WOBBLE_RETURN_ANIMATION_DURATION
     private var wobbleAngle = WOBBLE_ANGLE
+
+    private var borderWidth = DEFAULT_BORDER_WIDTH_IN_DP.toInt()
+    private var highlightColor = OVERALL_COLOR
 
     init {
         inflate(context, R.layout.fliptab, this)
@@ -110,6 +114,16 @@ class FlipTab : FrameLayout {
                     setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
                     setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
                 }
+                setBorderWidth(
+                    getDimension(
+                        R.styleable.FlipTab_borderWidth,
+                        TypedValue.applyDimension(
+                            TypedValue.COMPLEX_UNIT_DIP,
+                            DEFAULT_BORDER_WIDTH_IN_DP,
+                            resources.displayMetrics
+                        )
+                    ).toInt()
+                )
                 if (typedArray.getInt(R.styleable.FlipTab_startingTab, 0) == 1) {
                     isLeftSelected = false
                     tab_selected_container.rotationY = 180f
@@ -209,30 +223,24 @@ class FlipTab : FrameLayout {
     }
 
     public fun setHighlightColor(color: Int) {
-        (tab_left.background as GradientDrawable)?.setStroke(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                2f,
-                resources.displayMetrics
-            ).toInt(), color
-        )
-        (tab_right.background as GradientDrawable)?.setStroke(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                2f,
-                resources.displayMetrics
-            ).toInt(), color
-        )
-        (tab_selected.background as GradientDrawable)?.setStroke(
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                2f,
-                resources.displayMetrics
-            ).toInt(), color
-        )
-        (tab_selected.background as GradientDrawable)?.setColor(color)
+        highlightColor = color
+        setBorderWidth(borderWidth)
+        (tab_selected.background as? GradientDrawable)?.setColor(color)
         DrawableCompat.setTint(leftSelectedDrawable, color)
         DrawableCompat.setTint(rightSelectedDrawable, color)
+    }
+
+    public fun setBorderWidth(widthInPx: Int) {
+        borderWidth = widthInPx
+        (tab_left.background as? GradientDrawable)?.setStroke(
+            widthInPx, highlightColor
+        )
+        (tab_right.background as? GradientDrawable)?.setStroke(
+            widthInPx, highlightColor
+        )
+        (tab_selected.background as? GradientDrawable)?.setStroke(
+            widthInPx, highlightColor
+        )
     }
 
     public fun setLeftTabText(text: String) {
