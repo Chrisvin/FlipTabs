@@ -39,6 +39,7 @@ To run the demo project, clone the repository and run it via Android Studio.
   app:overallColor="#9966EE"
   app:textColor="#FF0000" //will be ignored if overallColor is defined
   app:highlightColor="#FF0000" //will be ignored if overallColor is defined
+  app:borderWidth="4dp" // Default border width is 2dp
   app:flipAnimationDuration="400"
   app:wobbleReturnAnimationDuration="200"
   app:wobbleAngle="3" />
@@ -65,6 +66,18 @@ flipTab.setWobbleReturnAnimationDuration(250)
 
 //Set angle upto which the tabs wobble
 flipTab.setWobbleAngle(3f)
+//Set width of the border in px
+fliptab.setBorderWidth(12f)
+
+//Modify properties of the textviews used in FlipTab
+fliptab.getTextViews().forEach {
+    it.setTypeface(it.typeface, Typeface.ITALIC)
+}
+//Or modify a specific textview
+fliptab.getSelectedTextView().apply {
+    setTypeface(typeface, Typeface.BOLD)
+}
+// Similarly, fliptab.getLeftTextView() & fliptab.getRightTextView() can be used
 
 //Flip the tab (left -> right & vice versa)
 flipTab.flipTabs()
