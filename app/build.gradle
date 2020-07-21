@@ -35,5 +35,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 //    implementation project(':fliptabs')
-    implementation 'com.github.Chrisvin:FlipTabs:v1.0'
+    implementation 'com.github.Chrisvin:FlipTabs:v1.3'
 }
