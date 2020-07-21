@@ -19,7 +19,7 @@ allprojects {
 ```
 2. Add the FlipTabs dependency in the build.gradle:
 ```
-implementation 'com.github.Chrisvin:FlipTabs:v1.2'
+implementation 'com.github.Chrisvin:FlipTabs:v1.3'
 ```
 
 ### Demo app
