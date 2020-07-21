@@ -301,4 +301,24 @@ class FlipTab : FrameLayout {
             tabSelectedListener?.onTabReselected(isLeftSelected, rightTabText)
         }
     }
+
+    public fun getLeftTextView(): TextView {
+        return tab_left
+    }
+
+    public fun getRightTextView(): TextView {
+        return tab_right
+    }
+
+    public fun getSelectedTextView(): TextView {
+        return tab_selected
+    }
+
+    public fun getTextViews(): ArrayList<TextView> {
+        return arrayListOf(
+            getLeftTextView(),
+            getRightTextView(),
+            getSelectedTextView()
+        )
+    }
 }
