@@ -1,6 +1,5 @@
 package com.jem.fliptabsdemo
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -17,6 +16,27 @@ class MainActivity : AppCompatActivity() {
         val stringTemplate = "This is the %s content."
         textSwitcher.setInAnimation(this@MainActivity, android.R.anim.slide_in_left)
         textSwitcher.setOutAnimation(this@MainActivity, android.R.anim.slide_out_right)
+
+        /*
+        fliptab.setBorderWidth(
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                4f,
+                resources.displayMetrics
+            ).toInt()
+        )
+        fliptab.getTextViews().forEach {
+            it.setTypeface(it.typeface, Typeface.ITALIC)
+            it.minLines = 2
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                it.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_NONE)
+            }
+            it.textSize = 16f
+        }
+        fliptab.getSelectedTextView().apply {
+            setTypeface(typeface, Typeface.BOLD)
+        }
+        */
 
         /*
         val flipTab = FlipTab(this)
@@ -48,14 +68,22 @@ class MainActivity : AppCompatActivity() {
         //(Does flip animation when selecting if withAnimation is true, else skips animation)
          */
 
-        fliptab.setTabSelectedListener(object: FlipTab.TabSelectedListener {
+        fliptab.setTabSelectedListener(object : FlipTab.TabSelectedListener {
             override fun onTabSelected(isLeftTab: Boolean, tabTextValue: String) {
                 textSwitcher.setText(String.format(stringTemplate, tabTextValue))
-                Toast.makeText(this@MainActivity, (if (isLeftTab) "Left" else "Right") + " tab selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    (if (isLeftTab) "Left" else "Right") + " tab selected",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             override fun onTabReselected(isLeftTab: Boolean, tabTextValue: String) {
-                Toast.makeText(this@MainActivity, (if (isLeftTab) "Left" else "Right") + " tab reselected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MainActivity,
+                    (if (isLeftTab) "Left" else "Right") + " tab reselected",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
         })
