@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.InsetDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.graphics.drawable.DrawableCompat
@@ -12,6 +14,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.TextView
 import kotlinx.android.synthetic.main.fliptab.view.*
 
 
@@ -232,12 +235,20 @@ class FlipTab : FrameLayout {
 
     public fun setBorderWidth(widthInPx: Int) {
         borderWidth = widthInPx
-        (tab_left.background as? GradientDrawable)?.setStroke(
+        ((tab_left.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
             widthInPx, highlightColor
         )
-        (tab_right.background as? GradientDrawable)?.setStroke(
+        ((tab_right.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
             widthInPx, highlightColor
         )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            (tab_left.background as? LayerDrawable)?.setLayerInsetRight(
+                0, -widthInPx
+            )
+            (tab_right.background as? LayerDrawable)?.setLayerInsetLeft(
+                0, -widthInPx
+            )
+        }
         (tab_selected.background as? GradientDrawable)?.setStroke(
             widthInPx, highlightColor
         )
