@@ -8,7 +8,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="horizontal">
         <TextView
@@ -16,7 +16,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:autoSizeTextType="uniform"
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeMaxTextSize="100sp"
@@ -33,7 +33,7 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:autoSizeTextType="uniform"
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeMaxTextSize="100sp"
@@ -48,7 +48,7 @@
     </LinearLayout>
     <LinearLayout
             android:id="@+id/tab_selected_container"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="horizontal">
         <TextView
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:autoSizeTextType="uniform"
                 app:autoSizeMinTextSize="12sp"
                 app:autoSizeMaxTextSize="100sp"
