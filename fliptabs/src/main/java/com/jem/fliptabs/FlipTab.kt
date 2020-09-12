@@ -3,9 +3,9 @@ package com.jem.fliptabs
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.support.annotation.RequiresApi
@@ -70,6 +70,14 @@ class FlipTab : FrameLayout {
         private val WOBBLE_RETURN_ANIMATION_DURATION = 250
         private val WOBBLE_ANGLE: Float = 5f
         private val OVERALL_COLOR: Int = Color.parseColor("#ff0099cc")
+        private val DISABLED_COLOR: Int = Color.parseColor("#ff808080")
+        private val STATES = arrayOf(
+            intArrayOf(android.R.attr.state_enabled),
+            intArrayOf(-android.R.attr.state_enabled)
+        )
+        private val DEFAULT_COLOR_LIST = ColorStateList(
+            STATES, intArrayOf(OVERALL_COLOR, DISABLED_COLOR)
+        )
         private const val DEFAULT_BORDER_WIDTH_IN_DP = 2f
     }
 
@@ -78,7 +86,8 @@ class FlipTab : FrameLayout {
     private var wobbleAngle = WOBBLE_ANGLE
 
     private var borderWidth = DEFAULT_BORDER_WIDTH_IN_DP.toInt()
-    private var highlightColor = OVERALL_COLOR
+    private var textColors: ColorStateList = DEFAULT_COLOR_LIST
+    private var highlightColors: ColorStateList = DEFAULT_COLOR_LIST
 
     init {
         inflate(context, R.layout.fliptab, this)
@@ -221,26 +230,111 @@ class FlipTab : FrameLayout {
     }
 
     public fun setTextColor(color: Int) {
-        tab_left.setTextColor(color)
-        tab_right.setTextColor(color)
+        val newTextColors = intArrayOf(
+            color,
+            textColors.getColorForState(intArrayOf(-android.R.attr.state_enabled), DISABLED_COLOR)
+        )
+        setTextColor(ColorStateList(STATES, newTextColors))
+    }
+
+    public fun setTextColor(colors: ColorStateList) {
+        textColors = colors
+        tab_left.setTextColor(textColors)
+        tab_right.setTextColor(textColors)
     }
 
     public fun setHighlightColor(color: Int) {
-        highlightColor = color
+        val newHighlightColors = intArrayOf(
+            color,
+            highlightColors.getColorForState(
+                intArrayOf(-android.R.attr.state_enabled),
+                DISABLED_COLOR
+            )
+        )
+        setHighlightColor(ColorStateList(STATES, newHighlightColors))
+    }
+
+    public fun setHighlightColor(colors: ColorStateList) {
+        highlightColors = colors
+        resetColors()
+    }
+
+    private fun resetColors() {
         setBorderWidth(borderWidth)
-        (tab_selected.background as? GradientDrawable)?.setColor(color)
-        DrawableCompat.setTint(leftSelectedDrawable, color)
-        DrawableCompat.setTint(rightSelectedDrawable, color)
+        val highlightColor = if (isEnabled) {
+            highlightColors.getColorForState(
+                intArrayOf(android.R.attr.state_enabled),
+                highlightColors.defaultColor
+            )
+        } else {
+            highlightColors.getColorForState(
+                intArrayOf(-android.R.attr.state_enabled),
+                DISABLED_COLOR
+            )
+        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            (tab_selected.background as? GradientDrawable)?.color = highlightColors
+//        } else {
+        (tab_selected.background as? GradientDrawable)?.setColor(highlightColor)
+//        }
+        DrawableCompat.setTint(leftSelectedDrawable, highlightColor)
+        DrawableCompat.setTint(rightSelectedDrawable, highlightColor)
+    }
+
+    public fun setDisabledColor(color: Int) {
+        val newTextColors = intArrayOf(
+            textColors.getColorForState(
+                intArrayOf(android.R.attr.state_enabled),
+                textColors.defaultColor
+            ),
+            color
+        )
+        val newHighlightColors = intArrayOf(
+            highlightColors.getColorForState(
+                intArrayOf(android.R.attr.state_enabled),
+                highlightColors.defaultColor
+            ),
+            color
+        )
+        setTextColor(ColorStateList(STATES, newTextColors))
+        setHighlightColor(ColorStateList(STATES, newHighlightColors))
     }
 
     public fun setBorderWidth(widthInPx: Int) {
         borderWidth = widthInPx
-        ((tab_left.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
-            widthInPx, highlightColor
-        )
-        ((tab_right.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
-            widthInPx, highlightColor
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ((tab_left.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
+                widthInPx, highlightColors
+            )
+            ((tab_right.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
+                widthInPx, highlightColors
+            )
+            (tab_selected.background as? GradientDrawable)?.setStroke(
+                widthInPx, highlightColors
+            )
+        } else {
+            ((tab_left.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
+                widthInPx,
+                highlightColors.getColorForState(
+                    intArrayOf(android.R.attr.state_enabled),
+                    highlightColors.defaultColor
+                )
+            )
+            ((tab_right.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
+                widthInPx,
+                highlightColors.getColorForState(
+                    intArrayOf(android.R.attr.state_enabled),
+                    highlightColors.defaultColor
+                )
+            )
+            (tab_selected.background as? GradientDrawable)?.setStroke(
+                widthInPx,
+                highlightColors.getColorForState(
+                    intArrayOf(android.R.attr.state_enabled),
+                    highlightColors.defaultColor
+                )
+            )
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             (tab_left.background as? LayerDrawable)?.setLayerInsetRight(
                 0, -widthInPx
@@ -249,9 +343,6 @@ class FlipTab : FrameLayout {
                 0, -widthInPx
             )
         }
-        (tab_selected.background as? GradientDrawable)?.setStroke(
-            widthInPx, highlightColor
-        )
     }
 
     public fun setLeftTabText(text: String) {
