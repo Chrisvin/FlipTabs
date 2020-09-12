@@ -412,4 +412,12 @@ class FlipTab : FrameLayout {
             getSelectedTextView()
         )
     }
+
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        tab_left.isEnabled = enabled
+        tab_right.isEnabled = enabled
+        tab_selected.isEnabled = enabled
+        resetColors()
+    }
 }
