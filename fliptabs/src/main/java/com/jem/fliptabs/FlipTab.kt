@@ -52,17 +52,29 @@ class FlipTab : FrameLayout {
     private var tabSelectedListener: TabSelectedListener? = null
 
     private val leftSelectedDrawable by lazy {
+        val drawableResource =
+            if (context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                R.drawable.tab_right_selected
+            } else {
+                R.drawable.tab_left_selected
+            }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            resources.getDrawable(R.drawable.tab_left_selected, null)
+            resources.getDrawable(drawableResource, null)
         } else {
-            resources.getDrawable(R.drawable.tab_left_selected)
+            resources.getDrawable(drawableResource)
         }
     }
     private val rightSelectedDrawable by lazy {
+        val drawableResource =
+            if (context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                R.drawable.tab_left_selected
+            } else {
+                R.drawable.tab_right_selected
+            }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            resources.getDrawable(R.drawable.tab_right_selected, null)
+            resources.getDrawable(drawableResource, null)
         } else {
-            resources.getDrawable(R.drawable.tab_right_selected)
+            resources.getDrawable(drawableResource)
         }
     }
 
