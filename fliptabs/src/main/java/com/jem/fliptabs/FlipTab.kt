@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -158,10 +159,12 @@ class FlipTab : FrameLayout {
     }
 
     public fun flipTabs() {
+        val rtlBool = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+        val rtl = if (rtlBool) -1 else 1
         animationMiddleViewFlippedFlag = false
         isLeftSelected = !isLeftSelected
         tab_selected_container.animate()
-            .rotationY(if (isLeftSelected) 0f else 180f)
+            .rotationY(if (isLeftSelected) 0f else rtl * 180f)
             .setDuration(flipAnimationDuration.toLong())
             .withStartAction {
                 (parent as ViewGroup?)?.clipChildren = false
@@ -175,12 +178,22 @@ class FlipTab : FrameLayout {
                 if (animationMiddleViewFlippedFlag) return@setUpdateListener
 
                 //TODO: Find out a better alternative to changing Background in the middle of animation (might result in dropped frame/stutter)
-                if (isLeftSelected && tab_selected_container.rotationY <= 90f) {
+                if (isLeftSelected && if (rtlBool) {
+                        tab_selected_container.rotationY >= -90f
+                    } else {
+                        tab_selected_container.rotationY <= 90f
+                    }
+                ) {
                     animationMiddleViewFlippedFlag = true
                     tab_selected.text = leftTabText
                     tab_selected.background = leftSelectedDrawable
                     tab_selected.scaleX = 1f
-                } else if (!isLeftSelected && tab_selected_container.rotationY >= 90f) {
+                } else if (!isLeftSelected && if (rtlBool) {
+                        tab_selected_container.rotationY <= -90f
+                    } else {
+                        tab_selected_container.rotationY >= 90f
+                    }
+                ) {
                     animationMiddleViewFlippedFlag = true
                     tab_selected.text = rightTabText
                     tab_selected.background = rightSelectedDrawable
@@ -194,7 +207,9 @@ class FlipTab : FrameLayout {
             .start()
         val animSet = AnimatorSet()
         val animator1 = ObjectAnimator.ofFloat(
-            base_fliptab_container, "rotationY", if (isLeftSelected) -wobbleAngle else wobbleAngle
+            base_fliptab_container,
+            "rotationY",
+            if (isLeftSelected) rtl * -wobbleAngle else rtl * wobbleAngle
         )
         animator1.duration = flipAnimationDuration.toLong()
         val animator2 = ObjectAnimator.ofFloat(base_fliptab_container, "rotationY", 0f)
