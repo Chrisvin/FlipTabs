@@ -357,6 +357,7 @@ class FlipTab : FrameLayout {
     }
 
     public fun setBorderWidth(widthInPx: Int) {
+        val rtlBool = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
         borderWidth = widthInPx
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             ((tab_left.background as? LayerDrawable)?.getDrawable(0) as? GradientDrawable)?.setStroke(
@@ -392,12 +393,33 @@ class FlipTab : FrameLayout {
             )
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            (tab_left.background as? LayerDrawable)?.setLayerInsetRight(
-                0, -widthInPx
-            )
-            (tab_right.background as? LayerDrawable)?.setLayerInsetLeft(
-                0, -widthInPx
-            )
+            if (rtlBool) {
+                (tab_left.background as? LayerDrawable)?.setLayerInsetLeft(
+                    0, -widthInPx
+                )
+                (tab_left.background as? LayerDrawable)?.setLayerInsetRight(
+                    0, 0
+                )
+                (tab_right.background as? LayerDrawable)?.setLayerInsetRight(
+                    0, -widthInPx
+                )
+                (tab_right.background as? LayerDrawable)?.setLayerInsetLeft(
+                    0, 0
+                )
+            } else {
+                (tab_left.background as? LayerDrawable)?.setLayerInsetLeft(
+                    0, 0
+                )
+                (tab_left.background as? LayerDrawable)?.setLayerInsetRight(
+                    0, -widthInPx
+                )
+                (tab_right.background as? LayerDrawable)?.setLayerInsetRight(
+                    0, 0
+                )
+                (tab_right.background as? LayerDrawable)?.setLayerInsetLeft(
+                    0, -widthInPx
+                )
+            }
         }
     }
 
