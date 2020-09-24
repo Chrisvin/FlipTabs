@@ -51,6 +51,33 @@ class FlipTab : FrameLayout {
 
     private var tabSelectedListener: TabSelectedListener? = null
 
+    private val leftUnselectedDrawable by lazy {
+        val drawableResource =
+            if (context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                R.drawable.tab_right_unselected
+            } else {
+                R.drawable.tab_left_unselected
+            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resources.getDrawable(drawableResource, null)
+        } else {
+            resources.getDrawable(drawableResource)
+        }
+    }
+    private val rightUnselectedDrawable by lazy {
+        val drawableResource =
+            if (context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                R.drawable.tab_left_unselected
+            } else {
+                R.drawable.tab_right_unselected
+            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resources.getDrawable(drawableResource, null)
+        } else {
+            resources.getDrawable(drawableResource)
+        }
+    }
+
     private val leftSelectedDrawable by lazy {
         val drawableResource =
             if (context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) {
@@ -139,6 +166,8 @@ class FlipTab : FrameLayout {
                     setTextColor(getColor(R.styleable.FlipTab_textColor, OVERALL_COLOR))
                     setHighlightColor(getColor(R.styleable.FlipTab_highlightColor, OVERALL_COLOR))
                 }
+                tab_left.background = leftUnselectedDrawable
+                tab_right.background = rightUnselectedDrawable
                 setBorderWidth(
                     getDimension(
                         R.styleable.FlipTab_borderWidth,
